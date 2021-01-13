@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Simpify track within an error limit.
+## Simplify track within an error limit.
 ## This will reduce the number of track points and the overall size of the file.
 
 number=$1
