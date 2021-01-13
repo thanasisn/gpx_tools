@@ -1,7 +1,7 @@
 #!/bin/bash
 ## created on 2020-10-26
 
-##  Reduce file size by removing spaces tabs and newlines.
+####  Reduce xml file size by removing spaces tabs and newlines.
 ##  This helps with sites that limit upload size of files.
 ##  Only \n we assume Unix line endings.
 

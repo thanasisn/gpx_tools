@@ -1,6 +1,7 @@
 #!/bin/bash
 ## created on 2015-09-10
 
+#### convert tcx to gpx
 
 folderIN="$1"
 folderOUT="$2"
