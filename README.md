@@ -4,6 +4,7 @@
 A collection of tools for gps files. Mainly centered on .gpx files.
 I use a lot of them to process data from garmin etrex device.
 
+*Suggestions and improvements are welcome ofcourse*
 
 ## Type conversion scripts (`<ext>_to_<ext>.sh`).
 
