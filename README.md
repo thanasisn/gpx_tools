@@ -11,3 +11,5 @@ I use a lot of them to process data from garmin etrex device.
 These are for mass conversion of files between types. And includes a workaround for gpsbabel, which can not handle all types of file names (ex. greek utf-8).
 
 *Suggestions and improvements are always welcome.*
+
+*I use those regular, but they have their quirks, may broke and maybe superseded by other tools.*

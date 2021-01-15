@@ -2,28 +2,32 @@
 ## created on 2013-07-30
 
 #### search gpx files and based on coordinate box
-##   apparently this is slow
+## apparently this is slow
 
-## folders to search
+## This script is superseded by another, but it should work.
 
-folders="$HOME/Documents/Running/Polar/ \
-         $HOME/Documents/Running/data/ \
-         $HOME/GISdata/GPX/ "
+# South
+latmin=39.93
+# North
+latmax=40.03
 
-latmin=41.0938
-latmax=41.2004
+# West
+lonmin=23.53
+# East
+lonmax=23.69
 
-lonmin=24.795
-lonmax=24.993
 
-for dir in $folders; do
-    echo $dir
-    find "$dir" -type f -iname *.gpx
-done | while read file; do
-    #echo " >>>  $file"
+
+find \
+    "$HOME/Documents/Running/Polar" \
+    "$HOME/GISdata/GPX" \
+    -type f -iname "*.gpx" |\
+while read file; do
+    echo " >>>  $file"
     lat_line=0
     lon_line=0
-    testf=$file
+    testf="$file"
+
     ## latitude search
     while read line; do
         if ( [[ $(echo "$line > $latmin" | bc -l) == 1 ]] && [[ $(echo "$line < $latmax" | bc -l) == 1 ]] ); then
@@ -63,11 +67,6 @@ done | while read file; do
 done
 
 
-
-
-
-
-
 # #testf="/home/athan/mainnav-tracklogs/13-07-29_18:50/track_13-07-27_06:25.gpx"
 # testf=$file
 # ## latitude search
@@ -97,14 +96,6 @@ done
 #         continue
 #     fi
 # done < <(cat $testf | grep "<trkpt .*>" | grep -oP 'lon=".*?"' | grep -o "[0-9.,]*")
-#
-#
-#
-#
-# echo $found_lat $lat_line
-# echo $found_lon $lon_line
-
-#cat $testf
 
 # cat $testf | grep "<trkpt .*>" | grep -oP 'lon=".*?"' | grep -o "[0-9.,]*"
 
