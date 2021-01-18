@@ -85,8 +85,14 @@ for (af in gpxlist) {
     temp <- temp[ order(temp$time, na.last = FALSE), ]
     if (nrow(temp)<2) { next() }
 
+    ## keep initial coords
+    latlon <- st_coordinates(temp$geometry)
+    latlon <- data.table(latlon)
+    names(latlon)[names(latlon)=="X"] <- "Xdeg"
+    names(latlon)[names(latlon)=="Y"] <- "Ydeg"
+
     ## add distance between points in meters
-    temp$dist <- c(0,trackDistance(st_coordinates(temp$geometry), longlat = TRUE)) * 1000
+    temp$dist <- c(0, trackDistance(st_coordinates(temp$geometry), longlat = TRUE)) * 1000
 
     ## add time between points
     temp$timediff <- 0
@@ -94,25 +100,27 @@ for (af in gpxlist) {
         temp$timediff[i] <- difftime( temp$time[i], temp$time[i-1] )
     }
 
-    ## parse coordinates for process
+    ## parse coordinates for process in meters
     temp   <- st_transform(temp, EPSG)
     trkcco <- st_coordinates(temp)
     temp   <- data.table(temp)
     temp$X <- unlist(trkcco[,1])
     temp$Y <- unlist(trkcco[,2])
+    temp   <- cbind(temp, latlon)
 
     ## data to keep
-    temp   <- temp[, .(time,X,Y,dist,timediff, file = af, F_mtime = file.mtime(af))]
+    temp   <- temp[, .(time,X,Y,Xdeg,Ydeg,dist,timediff, file = af, F_mtime = file.mtime(af))]
 
-    stop()
+    ## some files don't have tracks
     if (!nrow(temp)>0) { next() }
     data <- rbind(data,temp)
 
+    ## partial write
     if (cnt %% 40 == 0) {
         write_RDS(data, trackpoints_fl)
     }
-
 }
+## final write
 write_RDS(data, trackpoints_fl)
 
 
