@@ -19,6 +19,9 @@ library(sf)
 library(sfheaders)
 library(myRtools)
 
+##TODO create a new shapefile with count in each region
+
+## this is layer with multiple polygons in which the gpx files may be
 regions_fl     <- "~/GISdata/Layers/path_regions.shp"
 
 EPSG           <- 3857
@@ -62,9 +65,8 @@ regions <- st_read(regions_fl, stringsAsFactors = FALSE)
 regions <- st_transform(regions, EPSG)
 
 
-gather <- data.table()
 ## characterize all files with all regions
-
+gather         <- data.table()
 reproj         <- sf_point(data, x = "X", y = "Y")
 st_crs(reproj) <- 3857
 
@@ -92,6 +94,5 @@ write_RDS(gather, file = "~/GISdata/Location_list_2.Rds")
 
 
 ####_ END _####
-tac = Sys.time(); difftime(tac,tic,units="mins")
-cat(paste("\n  --  ",  Script.Name, " DONE  --  \n\n"))
-cat(sprintf("%s H:%s U:%s S:%s T:%f\n\n",Sys.time(),Sys.info()["nodename"],Sys.info()["login"],Script.Name,difftime(tac,tic,units="mins")))
+tac = Sys.time()
+cat(sprintf("\n%s H:%s U:%s S:%s T:%f\n\n",Sys.time(),Sys.info()["nodename"],Sys.info()["login"],Script.Name,difftime(tac,tic,units="mins")))

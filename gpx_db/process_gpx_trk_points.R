@@ -464,9 +464,6 @@ for (res in rsls) {
 
 
 
-
-
 ####_ END _####
-tac = Sys.time(); difftime(tac,tic,units="mins")
-cat(paste("\n  --  ",  Script.Name, " DONE  --  \n\n"))
-cat(sprintf("%s H:%s U:%s S:%s T:%f\n\n",Sys.time(),Sys.info()["nodename"],Sys.info()["login"],Script.Name,difftime(tac,tic,units="mins")))
+tac = Sys.time()
+cat(sprintf("\n%s H:%s U:%s S:%s T:%f mins\n\n",Sys.time(),Sys.info()["nodename"],Sys.info()["login"],Script.Name,difftime(tac,tic,units="mins")))
