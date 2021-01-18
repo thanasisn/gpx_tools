@@ -101,8 +101,10 @@ for (af in gpxlist) {
     temp$X <- unlist(trkcco[,1])
     temp$Y <- unlist(trkcco[,2])
 
+    ## data to keep
     temp   <- temp[, .(time,X,Y,dist,timediff, file = af, F_mtime = file.mtime(af))]
 
+    stop()
     if (!nrow(temp)>0) { next() }
     data <- rbind(data,temp)
 
