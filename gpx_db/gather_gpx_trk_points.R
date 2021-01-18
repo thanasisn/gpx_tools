@@ -85,7 +85,7 @@ for (af in gpxlist) {
     temp <- temp[ order(temp$time, na.last = FALSE), ]
     if (nrow(temp)<2) { next() }
 
-    ## keep initial coords
+    ## keep initial coordinates
     latlon <- st_coordinates(temp$geometry)
     latlon <- data.table(latlon)
     names(latlon)[names(latlon)=="X"] <- "Xdeg"
