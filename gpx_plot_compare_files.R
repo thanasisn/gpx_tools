@@ -74,17 +74,17 @@ if (!NO_TIMES) {
 ## plot points
 par(mar=c(2.5,2,0.3,0.3))
 plot(1, type="n", xlab="", ylab="", xlim=range(gather$X), ylim=range(gather$Y),cex.axis = 0.7)
-col = 2
+cols <- 2
 fnam <- c()
 lcol <- c()
 for (af in unique(gather$file)) {
     temp <- gather[file==af]
-    lines(temp$X, temp$Y, col=col, lwd = 2)
+    lines(temp$X, temp$Y, col=scales::alpha(cols , 0.5), lwd = 3)
 
-    lcol <- c(lcol, col)
+    lcol <- c(lcol, cols)
     fnam <- c(fnam, basename(af))
 
-    col  <- col+1
+    cols  <- cols + 1
 }
 par(xpd=TRUE)
 # legend(min(gather$X),max(gather$Y), legend = fnam, pch=19, col = lcol,
@@ -100,20 +100,23 @@ if (!NO_TIMES) {
 ## A better method to plot files with and without time?
 ## A method to plot files with no times?
 
+cols <- 2
+comp <- 0.1
 
-plot(1, xaxt="n",yaxt="n", type="n", xlab="", ylab="", xlim=range(gather$time,na.rm = T), ylim=c(0.8,length(unique(gather$file))))
-col = 2
+plot(1, xaxt="n",yaxt="n", type="n", xlab="", ylab="", xlim=range(gather$time,na.rm = T), ylim=c(0,cols+length(unique(gather$file))))
+
 fnam <- c()
 lcol <- c()
 for (af in unique(gather$file)) {
     temp <- gather[file==af]
-    temp$col <- col-1
-    points(temp$time, temp$col, col=col, lwd = 2)
+    # temp$col <- 2
+    temp$col <- cols
+    points(temp$time, comp*temp$col, col = scales::alpha(cols , 0.5))
 
-    lcol <- c(lcol, col)
+    lcol <- c(lcol, cols)
     fnam <- c(fnam, basename(af))
 
-    col  <- col+1
+    cols  <- cols+1
 }
 # legend(min(gather$X),max(gather$Y), legend = fnam, pch=19, col = lcol,
 #        cex = 0.6, ncol = 2, bty="n")

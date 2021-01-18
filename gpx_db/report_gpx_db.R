@@ -160,6 +160,10 @@ lonmax=23.69
 data[ Xdeg >= lonmin & Xdeg <= lonmax ]
 data[ Ydeg >= latmin & Ydeg <= latmax ]
 
+## find files in the box
+## list them
+## find the line number of matches in the file
+
 
 
 

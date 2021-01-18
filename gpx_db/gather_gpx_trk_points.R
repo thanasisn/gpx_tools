@@ -10,7 +10,7 @@ rm(list = (ls()[ls() != ""]))
 Sys.setenv(TZ = "UTC")
 tic = Sys.time()
 Script.Name = funr::sys.script()
-if(!interactive())pdf(file=sub("\\.R$",".pdf",Script.Name),width = 14)
+if(!interactive())pdf(file=sub("\\.R$",".pdf",Script.Name))
 sink(file=sub("\\.R$",".out",Script.Name,),split=TRUE)
 
 library(sf)
