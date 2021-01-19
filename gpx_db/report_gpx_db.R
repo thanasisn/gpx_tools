@@ -73,7 +73,7 @@ if ( nrow( data[ is.na(time)] ) > 0 ) {
 
 
 ####  Detect possible duplicate files  #########################################
-cat(paste("Get posible duplicate files\n"))
+cat(paste("Get possible duplicate files\n"))
 
 ## get files with points in the same date
 file_dates <- data[, .N, by = .(Date = as.Date(time), file)]
@@ -145,24 +145,55 @@ gdata::write.fwf(short[,.(Sum,V1)],
 
 ####  Find data within a box  ##################################################
 
-# South
-latmin=39.93
+## Useful for cleaning erroneous records by location
+
+
 # North
-latmax=40.03
+latmax=39.99
+# South
+latmin=39.973
 
 # West
-lonmin=23.53
+lonmin=23.89
 # East
-lonmax=23.69
+lonmax=23.91
+
+## specify date
+# inbox <- data[ Xdeg >= lonmin &
+#                Xdeg <= lonmax &
+#                Ydeg >= latmin &
+#                Ydeg <= latmax & as.Date(time) == "2020-06-30"  ]
 
 
+inbox <- data[ Xdeg >= lonmin &
+               Xdeg <= lonmax &
+               Ydeg >= latmin &
+               Ydeg <= latmax   ]
 
-data[ Xdeg >= lonmin & Xdeg <= lonmax ]
-data[ Ydeg >= latmin & Ydeg <= latmax ]
+ffiles <- unique( inbox$file )
 
-## find files in the box
-## list them
-## find the line number of matches in the file
+cat(paste("Found", length(ffiles)), "files in the box" )
+cat(ffiles,sep = "\n")
+
+for (af in ffiles) {
+    lines  <- readLines(af, warn = FALSE)
+    ## find lines in file
+    lats   <- regmatches(lines, regexpr("lat=[.\"0-9]+", lines) )
+    lats   <- as.numeric(regmatches(lats, regexpr("[.0-9]+", lats) ))
+    lons   <- regmatches(lines, regexpr("lon=[.\"0-9]+", lines) )
+    lons   <- as.numeric(regmatches(lons, regexpr("[.0-9]+", lons) ))
+    flines <- which(lats >= latmin & lats <= latmax & lons >= lonmin & lons <= lonmax)
+
+    cat(paste("IN:", af),"\n")
+    cat(paste("Lines:", length(flines)),"\n")
+    # cat(paste("line:", flines ), sep = "\n" )
+
+    for (al in flines) {
+        cat(paste("line: ", al, "   ",lines[al] ), sep = "\n" )
+    }
+    cat("\n")
+}
+
 
 
 

@@ -278,7 +278,7 @@ gdata::write.fwf(filescnt,
 
 
 
-####  Export filterd gpx for usage  ############################################
+####  Export filtered gpx for usage  ###########################################
 
 ## deduplicate WPT
 gather_wpt <- unique(gather_wpt)

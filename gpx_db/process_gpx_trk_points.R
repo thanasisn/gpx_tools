@@ -77,7 +77,7 @@ if ( nrow( data[ is.na(time)] ) > 0 ) {
 
 
 ####  Detect possible duplicate files  ####
-cat(paste("Get posible duplicate files\n"))
+cat(paste("Get possible duplicate files\n"))
 
 ## get files with points in the same date
 file_dates <- data[, .N, by = .(Date = as.Date(time), file)]
@@ -308,7 +308,7 @@ cat(paste( length(unique( ddaa$file )), "unique files sorted\n" ))
 cat(paste( nrow( ddaa ), "unique points to bin\n" ))
 
 
-####  export for each year  ####
+####  export for each year training data  ####
 traindb <- "~/GISdata/Layers/Grid_train_yearly.gpkg"
 years   <- unique(year(data$time))
 for (ay in years) {
@@ -342,7 +342,7 @@ for (ay in years) {
 }
 
 
-####  export all training  ####
+####  export all training data ####
 traindb <- "~/GISdata/Layers/Grid_train_all.gpkg"
 for (res in rsls) {
     ## get year data and simplify coordinates
@@ -397,7 +397,7 @@ cat(paste( length(unique( ddaa$file )), "unique files sorted\n" ))
 cat(paste( nrow( ddaa ), "unique points to bin\n" ))
 
 
-####  export for each year  ####
+####  export each year non training data  ####
 traindb <- "~/GISdata/Layers/Grid_rest_yearly.gpkg"
 years   <- unique(year(data$time))
 for (ay in years) {
@@ -431,7 +431,7 @@ for (ay in years) {
 }
 
 
-####  export all training  ####
+####  export all non training data  ####
 traindb <- "~/GISdata/Layers/Grid_rest_all.gpkg"
 for (res in rsls) {
   ## get year data and simplify coordinates
