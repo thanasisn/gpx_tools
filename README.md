@@ -10,6 +10,11 @@ Things they can do:
 - Simplify gpx track and reduce the number of points, with a given tolerance
 - Remove characters from a xml file in order to reduce size but not data
 - Search for gpx files that pass through a given coordinates box
+- Gpx files management (gpx_db)
+	- Gather track point and waypoints for process
+	- Clean, analyze, detect possible errors
+	- Create summaries of problems
+	- Create a gridded bin of points for qgis
 
 
 *Suggestions and improvements are always welcome.*
