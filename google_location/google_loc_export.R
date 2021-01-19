@@ -14,85 +14,110 @@ Script.Name = funr::sys.script()
 
 library(jsonlite)
 library(data.table)
-library(dplyr)
-library(OpenStreetMap)
-library(rgdal)
+# library(dplyr)
+# library(OpenStreetMap)
+# library(rgdal)
+
+
+## This is a big file to read
+locations <- data.table(fromJSON("~/LOGs/Takeout/Location History/Location History.json"))
+locations <- data.table(locations[[1]][[1]])
+
+## proper dates
+locations[, Date := as.POSIXct(as.numeric(timestampMs)/1000, tz='GMT', origin='1970-01-01') ]
+locations[, timestampMs := NULL]
+
+## proper coordinates
+locations[, Lat  := latitudeE7  / 1e7 ]
+locations[, Long := longitudeE7 / 1e7 ]
+locations[, latitudeE7  := NULL]
+locations[, longitudeE7 := NULL]
+
+## clean data
+locations[ Long == 0, Long := NA ]
+locations[ Lat  == 0, Lat  := NA ]
+locations <- locations[ !is.na(Long) ]
+locations <- locations[ !is.na(Lat)  ]
+
+hist(locations$Lat)
+hist(locations$Long)
+
+locations <- locations[ abs(Lat)  <  89.9999 ]
+locations <- locations[ abs(Long) < 179.9999 ]
+
+
+unique(locations$activity)
 
 stop("refactor")
 
-source("~/FUNCTIONS/R/plotting.R")
-
-basedir  = "~/DATA_RAW/Other/GLH/"
-pdfbyday = paste0(basedir,"Montly_plots_by_day.pdf")
-pdfbyact = paste0(basedir,"Montly_plots_by_act.pdf")
-
+# source("~/FUNCTIONS/R/plotting.R")
+#
+# basedir  = "~/DATA_RAW/Other/GLH/"
+# pdfbyday = paste0(basedir,"Montly_plots_by_day.pdf")
+# pdfbyact = paste0(basedir,"Montly_plots_by_act.pdf")
 
 ACTIVITY_MATCH_THRESHOLD = 60*3  ## time distance of the valid characterization
 
 
 ## test
-if (F) {
-    subscr <- data.frame(lat=c(10.1237,10.2161,10.2993),
-                       lon = c(59.7567,59.7527,59.6863), pop=c(58,12,150))
-    coordinates(subscr) <- ~lat+lon
-    proj4string(subscr) <- CRS("+init=epsg:4326")
-    lat <- c(59.7916,59.6563)
-    lon <- c(10.0937,10.3293)
-    map <- openmap(c(lat[1],lon[1]),c(lat[2],lon[2]),zoom=10,'osm')
-    plot(map)
-    points(spTransform(subscr,osm()))
-}
+# if (F) {
+#     subscr <- data.frame(lat=c(10.1237,10.2161,10.2993),
+#                        lon = c(59.7567,59.7527,59.6863), pop=c(58,12,150))
+#     coordinates(subscr) <- ~lat+lon
+#     proj4string(subscr) <- CRS("+init=epsg:4326")
+#     lat <- c(59.7916,59.6563)
+#     lon <- c(10.0937,10.3293)
+#     map <- openmap(c(lat[1],lon[1]),c(lat[2],lon[2]),zoom=10,'osm')
+#     plot(map)
+#     points(spTransform(subscr,osm()))
+# }
 
 
 # https://www.martijnvanvreeden.nl/2018/08/11/analysing-google-loc(ation-data/
 
 ## files are prepared and spited in here
-folderin <- "/dev/shm/glh/"
+# folderin <- "/dev/shm/glh/"
 
-fillist <- list.files( path       = folderin,
-                       pattern    = "GLH_part_.*.json",
-                       full.names = T)
-if ( length( fillist ) < 5 ) {
-    stop("Run googlelocations_split.R first")
-}
-
-cat(paste("Parse json files\n"))
-gather <- data.table()
-for (afil in fillist) {
-    cat(paste(afil),sep = "\n")
-    locations <- data.table(fromJSON(afil))
-
-    ## proper dates
-    locations[, Date := as.POSIXct(as.numeric(timestampMs)/1000, tz='GMT', origin='1970-01-01') ]
-    locations[ , timestampMs := NULL]
-
-    ## proper coordinates
-    locations[ , Lat  := latitudeE7  / 1e7 ]
-    locations[ , Long := longitudeE7 / 1e7 ]
-
-    locations[ , latitudeE7  := NULL]
-    locations[ , longitudeE7 := NULL]
-
-    locations[ Long == 0, Long := NA ]
-    locations[ Lat  == 0, Lat  := NA ]
-
-    locations <- locations[ !is.na(Long) ]
-    locations <- locations[ !is.na(Lat)  ]
-
-    ## this will break with more data probably
-    gather <- plyr::rbind.fill(gather, locations)
-
-    # plot(locations$Long, locations$Lat)
-}
-
-gather <- data.table(gather)
-
-gather <- gather[ abs(Lat)  <  89.9999 ]
-## 0 - 360? 0r -180 - 180
-gather <- gather[ abs(Long) < 179.9999 ]
+# fillist <- list.files( path       = folderin,
+#                        pattern    = "GLH_part_.*.json",
+#                        full.names = T)
+#
+# cat(paste("Parse json files\n"))
+# gather <- data.table()
+# for (afil in fillist) {
+#     cat(paste(afil),sep = "\n")
+#     locations <- data.table(fromJSON(afil))
+#
+#     ## proper dates
+#     locations[, Date := as.POSIXct(as.numeric(timestampMs)/1000, tz='GMT', origin='1970-01-01') ]
+#     locations[, timestampMs := NULL]
+#
+#     ## proper coordinates
+#     locations[, Lat  := latitudeE7  / 1e7 ]
+#     locations[, Long := longitudeE7 / 1e7 ]
+#
+#     locations[, latitudeE7  := NULL]
+#     locations[, longitudeE7 := NULL]
+#
+#     locations[ Long == 0, Long := NA ]
+#     locations[ Lat  == 0, Lat  := NA ]
+#
+#     locations <- locations[ !is.na(Long) ]
+#     locations <- locations[ !is.na(Lat)  ]
+#
+#     ## this will break with more data probably
+#     gather <- plyr::rbind.fill(gather, locations)
+#
+#     # plot(locations$Long, locations$Lat)
+# }
+#
+# gather <- data.table(gather)
+#
+# gather <- gather[ abs(Lat)  <  89.9999 ]
+# ## 0 - 360? 0r -180 - 180
+# gather <- gather[ abs(Long) < 179.9999 ]
 
 
-cat(paste("Export rds files\n"))
 ####  export daily data  ####
 for (aday in unique(as.Date(gather$Date))) {
     daydata <- gather[ as.Date(Date) == aday  ]
@@ -138,7 +163,6 @@ for (aday in unique(as.Date(gather$Date))) {
 
 
 
-cat(paste("Add activity to locations"),"\n")
 ####  add main activity to data  ####
 activities <- gather$activity
 sel        <- sapply(activities, function(x) !is.null(x[[1]]))

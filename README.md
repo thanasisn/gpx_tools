@@ -10,6 +10,7 @@ Things they can do:
 - Simplify gpx track and reduce the number of points, with a given tolerance
 - Remove characters from a xml file in order to reduce size but not data
 - Search for gpx files that pass through a given coordinates box
+- Combine multiple track to one gpx file
 - Gpx files management (gpx_db)
 	- Gather track point and waypoints for process
 	- Clean, analyze, detect possible errors
