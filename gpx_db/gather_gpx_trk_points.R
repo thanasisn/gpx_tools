@@ -82,6 +82,7 @@ for (af in gpxlist) {
 
     ## get all points
     temp <- read_sf(af, layer = "track_points")
+    ## This assumes that dates in file are correct.......
     temp <- temp[ order(temp$time, na.last = FALSE), ]
     if (nrow(temp)<2) { next() }
 
