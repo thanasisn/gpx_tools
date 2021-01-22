@@ -10,6 +10,8 @@ args <- commandArgs(trailingOnly=TRUE)
 ##TEST
 # args <- c("2.gpx", "1.gpx")
 
+## Use a system command to also open the files
+system_command <- "viking"
 
 ## test if there is at least one argument: if not, return an error
 if (length(args)==0) {
@@ -17,7 +19,7 @@ if (length(args)==0) {
 }
 
 
-## check files
+####  Check  args  ####
 files <- c()
 for (aa in args) {
     if (file.exists(aa)) {
@@ -34,22 +36,21 @@ if (length( files ) == 0) {
 
 
 
-## GPX files analysis ##
+####  GPX files analysis  ####
 library(sf)
 library(data.table)
 
 wecare <- c("ele","time","file")
 gather <- data.table()
 for (af in files) {
-    tracks <- read_sf(af, layer = "track_points")
+    tracks      <- read_sf(af, layer = "track_points")
     tracks$file <- af
-    trkcco <- st_coordinates(tracks)
-    tracks <- data.table(tracks)
-    tracks <- tracks[, ..wecare ]
-    tracks$X <- unlist(trkcco[,1])
-    tracks$Y <- unlist(trkcco[,2])
-
-    gather <- rbind(gather, tracks)
+    trkcco      <- st_coordinates(tracks)
+    tracks      <- data.table(tracks)
+    tracks      <- tracks[, ..wecare ]
+    tracks$X    <- unlist(trkcco[,1])
+    tracks$Y    <- unlist(trkcco[,2])
+    gather      <- rbind(gather, tracks)
 }
 
 
@@ -60,11 +61,15 @@ if (all(is.na(gather$time))) {
 }
 
 
+
+####  Plots  ####
+
 ##TODO
 ## Add map?
+## Plot speed
+## Plot elevation
 
 
-{
 X11()
 
 if (!NO_TIMES) {
@@ -96,37 +101,43 @@ legend("topleft", legend = fnam, pch=19, col = lcol,
 
 if (!NO_TIMES) {
 
-##TODO
-## A better method to plot files with and without time?
-## A method to plot files with no times?
+    ##TODO
+    ## A better method to plot files with and without time?
+    ## A method to plot files with no times?
 
-cols <- 2
-comp <- 0.1
+    cols <- 2
+    comp <- 0.1
 
-plot(1, xaxt="n",yaxt="n", type="n", xlab="", ylab="", xlim=range(gather$time,na.rm = T), ylim=c(0,cols+length(unique(gather$file))))
+    plot(1, xaxt="n",yaxt="n", type="n", xlab="", ylab="", xlim=range(gather$time,na.rm = T), ylim=c(0,cols+length(unique(gather$file))))
 
-fnam <- c()
-lcol <- c()
-for (af in unique(gather$file)) {
-    temp <- gather[file==af]
-    # temp$col <- 2
-    temp$col <- cols
-    points(temp$time, comp*temp$col, col = scales::alpha(cols , 0.5))
+    fnam <- c()
+    lcol <- c()
+    for (af in unique(gather$file)) {
+        temp <- gather[file==af]
+        # temp$col <- 2
+        temp$col <- cols
+        points(temp$time, comp*temp$col, col = scales::alpha(cols , 0.5))
 
-    lcol <- c(lcol, cols)
-    fnam <- c(fnam, basename(af))
+        lcol <- c(lcol, cols)
+        fnam <- c(fnam, basename(af))
 
-    cols  <- cols+1
-}
-# legend(min(gather$X),max(gather$Y), legend = fnam, pch=19, col = lcol,
-#        cex = 0.6, ncol = 2, bty="n")
-legend("bottomleft", legend = fnam, pch=19, col = lcol,
-       cex = 0.6, ncol = 2, bty="n")
-axis.POSIXct(1, gather$time, cex.axis = 0.7)
-
-}
+        cols  <- cols+1
+    }
+    # legend(min(gather$X),max(gather$Y), legend = fnam, pch=19, col = lcol,
+    #        cex = 0.6, ncol = 2, bty="n")
+    legend("bottomleft", legend = fnam, pch=19, col = lcol,
+           cex = 0.6, ncol = 2, bty="n")
+    axis.POSIXct(1, gather$time, cex.axis = 0.7)
 
 }
+
+####  Call a system program  ####
+try(
+    system(paste(system_command,
+                 paste(shQuote(path.expand(files), "cmd"),collapse = " "),
+                 " &"))
+)
+
 locator(1)
 
 
