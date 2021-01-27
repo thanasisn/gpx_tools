@@ -55,6 +55,8 @@ gpx_files <- list.files( path        = gpx_dir,
                          recursive   = T,
                          ignore.case = T,
                          full.names  = T)
+gpx_files <- grep("Plans",gpx_files, value = TRUE, invert = TRUE)
+gpx_files <- grep("WPT_",gpx_files, value = TRUE, invert = TRUE)
 
 run_files <- list.files( path        = gpx_pol,
                          pattern     = ".*[0-9].gpx$",
@@ -82,7 +84,7 @@ colorsl <- c( "blue" , "green",  "red"   )
 # comb    <- expand.grid( MONTH = 1:12,
 #                         YEAR  = year(min(datelist)):year(max(datelist)))
 comb <- expand.grid( MONTH = 1:12,
-                     YEAR  = 2015:year(max(datelist)) )
+                     YEAR  = 2016:year(max(datelist)) )
 
 
 
@@ -176,7 +178,8 @@ for (aa in 1:nrow(comb)) {
             ## read all gpx files
             gpx_points <- data.table()
             for (afil in gpx_fls) {
-                gpx_tmp    <- readGPX(gpx.file = afil)$tracks[[1]][[1]]
+                gpx_tmp    <- readGPX(gpx.file = afil,
+                                      waypoints = F, routes = F, tracks = T)$tracks[[1]][[1]]
                 if (is.null( gpx_tmp ) || nrow(gpx_tmp) == 0) {
                     cat(paste("No points, SKIP\n"))
                     HAVE_GPX <- FALSE
@@ -217,6 +220,7 @@ for (aa in 1:nrow(comb)) {
         }
         ## something is wrong
         if (lix > 3) stop("Have to code something more")
+        cat(paste("points:",nrow(allpoints),sum(!is.na(allpoints$Lat))),"\n")
 
         par(mar = c(1, 1, 1, 1))
 
