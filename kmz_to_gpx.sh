@@ -1,31 +1,16 @@
 #!/bin/bash
 ## created on 2015-09-10
 
-#### convert kmx to gpx
+#### convert kmz to gpx
 
-folderIN="$1"
-folderOUT="$2"
+echo "
+SORRY
 
-if [[ -d $folderIN ]]; then
-    echo "valid folder"
-else
-    echo "NOT VALID FOLDER!"
-    exit
-fi
+There is not a direct way to convert kmz files.
+They are a complex datat container.
 
-if [[ -d $folderOUT ]]; then
-    echo "valid folder"
-else
-    echo "NOT VALID FOLDER!"
-    exit
-fi
+Try unzip them and find the data you need.
+They should contain some kml files with spatial data!
+"
 
-find "$folderIN" -type f -iname "*.kmz" | sed  's,'"$folderIN"',,' | while read line;do
-    echo "${folderIN}${line}"
-    mkdir -p "$(dirname "${folderOUT}${line}")"
-
-    gpsbabel -w -r -t -i kmz -f - -o gpx -F - <"${folderIN}${line}" >"${folderOUT}${line%.*}.gpx"
-done
-
-
-exit 0
+exit 44
