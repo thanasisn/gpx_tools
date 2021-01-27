@@ -79,10 +79,10 @@ colorsl <- c( "blue" , "green",  "red"   )
 
 
 ## Plot by month
-comb    <- expand.grid( MONTH = 1:12,
-                        YEAR  = year(min(datelist)):year(max(datelist)) )
-# comb <- expand.grid( MONTH = 1:12,
-#                      YEAR  = 2019:year(max(datelist)) )
+# comb    <- expand.grid( MONTH = 1:12,
+#                         YEAR  = year(min(datelist)):year(max(datelist)))
+comb <- expand.grid( MONTH = 1:12,
+                     YEAR  = 2011:year(max(datelist)) )
 
 
 

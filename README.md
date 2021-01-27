@@ -16,7 +16,10 @@ Things they can do:
 	- Gather track point and waypoints for process
 	- Clean, analyze, detect possible errors
 	- Create summaries of problems
-	- Create a gridded bin of points for qgis
+	- Create gridded aggregated data from all points for use in qgis
+- Parse google location data (google_location)
+    - Create Rds R data files of data points and activity for further uses
+    - Plot maps with data from google location and gpx files
 
 
 *Suggestions and improvements are always welcome.*
