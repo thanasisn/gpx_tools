@@ -19,7 +19,7 @@ Things they can do:
 	- Create gridded aggregated data from all points for use in qgis
 - Parse google location data (google_location)
     - Create Rds R data files of data points and activity for further uses
-    - Plot maps with data from google location and gpx files
+    - Plot maps with data from google locations and gpx files
 
 
 *Suggestions and improvements are always welcome.*

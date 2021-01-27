@@ -82,7 +82,7 @@ colorsl <- c( "blue" , "green",  "red"   )
 # comb    <- expand.grid( MONTH = 1:12,
 #                         YEAR  = year(min(datelist)):year(max(datelist)))
 comb <- expand.grid( MONTH = 1:12,
-                     YEAR  = 2011:year(max(datelist)) )
+                     YEAR  = 2015:year(max(datelist)) )
 
 
 
