@@ -1,7 +1,7 @@
 #!/bin/bash
 ## created on 2015-09-10
 
-#### convert gpx to gpx
+#### Convert gpx to gpx
 ##  This is just to parse gpx files with gpsbabel in order to fix errors
 ##  and make file more human readable.
 

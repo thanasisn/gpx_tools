@@ -1,7 +1,7 @@
 #!/bin/bash
 ## created on 2015-09-10
 
-#### convert kmz to gpx
+#### Convert kmz to gpx, this is a lie
 
 echo "
 SORRY

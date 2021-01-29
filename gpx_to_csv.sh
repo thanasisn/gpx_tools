@@ -1,7 +1,7 @@
 #!/bin/bash
 ## created on 2015-09-10
 
-#### convert track gpx to csv
+#### Convert track gpx to csv
 
 folderIN="$1"
 folderOUT="$2"

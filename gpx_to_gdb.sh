@@ -2,7 +2,7 @@
 ## created on 2015-09-10
 
 
-#### convert gpx to gdb
+#### Convert gpx to gdb
 
 folderIN="$1"
 folderOUT="$2"
