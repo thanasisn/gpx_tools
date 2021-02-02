@@ -260,7 +260,7 @@ wecare <- c("Dist","elev_A","time_A","name_A","name_B","file_A","file_B" )
 
 gdata::write.fwf(suspects[, ..wecare],
                  sep = " ; ", quote = TRUE,
-                 file = "~/GISdata/Layers/Suspects.csv" )
+                 file = "~/GISdata/Suspects_wpt.csv" )
 
 
 ## ignore points in the same file
@@ -273,7 +273,7 @@ filescnt$Max_dist <- close_flag
 setorder(filescnt, N)
 gdata::write.fwf(filescnt,
                  sep = " ; ", quote = TRUE,
-                 file = "~/GISdata/Layers/Suspect_point_to_clean.csv" )
+                 file = "~/GISdata/Suspect_wpt_to_clean.csv" )
 
 
 
@@ -463,7 +463,7 @@ write.csv(filescnt, "~/GISdata/Layers/Suspect_point_to_clean_filtered.csv", row.
 wecare = grep("geom", names(suspects),invert = T,value = T )
 wecare <- c("Dist","name_A","name_B","file_A","file_B" )
 
-write.csv(suspects[,..wecare], "~/GISdata/Layers/Suspects_filtered.csv", row.names = FALSE)
+write.csv(suspects[,..wecare], "~/GISdata/Suspects_filtered.csv", row.names = FALSE)
 # gdata::write.fwf(suspects[,..wecare],
 #                  sep = " ; ", quote = TRUE,
 #                  file = "~/GISdata/Layers/Suspects_filtered.csv" )
