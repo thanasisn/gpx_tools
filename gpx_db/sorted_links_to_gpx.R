@@ -77,20 +77,8 @@ for (ar in unique(data$Region)) {
 
 
 ## copy long plans as is
-longpath  <- "~/GISdata/GPX/Plans/LONG/"
-outputrep <- "~/ZHOST/Gpx_by_location/"
-longf <- list.files(path = longpath,
-                    pattern = "gpx",
-                    recursive = T,
-                    full.names = T)
-for (af in longf) {
-    target <- paste0(outputrep,"/","LONG","/",basename(af))
-    dir.create(dirname(target), showWarnings = FALSE, recursive = T)
-    if (file.exists(target)) {
-        target <- paste0(tools::file_path_sans_ext(target),"_c.",tools::file_ext(target) )
-    }
-    file.symlink(af, target )
-}
+file.symlink("~/GISdata/GPX/Plans/LONG",
+             "~/ZHOST/Gpx_by_location/LONG")
 
 
 
