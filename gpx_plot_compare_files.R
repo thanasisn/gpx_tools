@@ -13,6 +13,11 @@ args <- commandArgs(trailingOnly=TRUE)
 ## Use a system command to also open the files
 system_command <- "viking"
 
+## TODO a metho to plot waypoints
+## cases with only waypoints
+## cases with only tracks
+
+
 ## test if there is at least one argument: if not, return an error
 if (length(args)==0) {
     stop("At least one argument must be supplied (input file).n", call.=FALSE)
@@ -26,6 +31,7 @@ for (aa in args) {
         files <- c(files,aa)
     }
 }
+files <- unique(files)
 
 if (length( files ) == 0) {
     cat(paste("No file exist\n"))
@@ -40,6 +46,7 @@ if (length( files ) == 0) {
 library(sf)
 library(data.table)
 
+## Read track points
 wecare <- c("ele","time","file")
 gather <- data.table()
 for (af in files) {
@@ -52,6 +59,24 @@ for (af in files) {
     tracks$Y    <- unlist(trkcco[,2])
     gather      <- rbind(gather, tracks)
 }
+
+## Read waypoints
+wecare <- c("ele","time","file","name")
+gather_wpt <- data.table()
+for (af in files) {
+    wpt        <- read_sf(af, layer = "waypoints")
+    wpt$file   <- af
+    wptcco     <- st_coordinates(wpt)
+    wpt        <- data.table(wpt)
+    wpt        <- wpt[, ..wecare ]
+    wpt$X      <- unlist(wptcco[,1])
+    wpt$Y      <- unlist(wptcco[,2])
+    gather_wpt <- rbind(gather_wpt, wpt)
+}
+
+## TODO by file
+cat(paste("Waypoints:  ", nrow(gather_wpt)),"\n")
+cat(paste("Trackpoints:", nrow(gather)    ),"\n")
 
 
 if (all(is.na(gather$time))) {
@@ -76,7 +101,7 @@ if (!NO_TIMES) {
     layout(matrix(c(1,1,2), 3, 1, byrow = TRUE))
 }
 
-## plot points
+## plot track points
 par(mar=c(2.5,2,0.3,0.3))
 plot(1, type="n", xlab="", ylab="", xlim=range(gather$X), ylim=range(gather$Y),cex.axis = 0.7)
 cols <- 2
@@ -130,6 +155,12 @@ if (!NO_TIMES) {
     axis.POSIXct(1, gather$time, cex.axis = 0.7)
 
 }
+
+
+
+
+
+
 
 ####  Call a system program  ####
 try(
