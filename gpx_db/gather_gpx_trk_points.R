@@ -27,6 +27,7 @@ options(warn=1)
 
 gpx_repo       <- "~/GISdata/GPX/"
 polar_repo     <- "~/Documents/Running/Polar/"
+gc_repo        <- "~/TRAIN/GoldenCheetah/"
 EPSG           <- 3857
 trackpoints_fl <- paste0( "~/GISdata/Count_sl2_",EPSG,".Rds")
 
@@ -41,8 +42,14 @@ polarlist <- list.files(polar_repo, ".gpx$",
                         recursive   = T,
                         full.names  = T,
                         ignore.case = T)
+
+gclist    <- list.files(gc_repo, ".gpx$",
+                        recursive   = T,
+                        full.names  = T,
+                        ignore.case = T)
+
 ## combine list
-gpxlist <- c(polarlist, gpxlist)
+gpxlist <- c(polarlist, gpxlist, gclist)
 ## exclude some files
 # gpxlist <- gpxlist[grep("orig", basename(gpxlist), ignore.case = TRUE, invert = T)]
 
