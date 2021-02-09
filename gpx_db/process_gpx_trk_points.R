@@ -291,7 +291,12 @@ for (res in rsls) {
 
 ####  Stats on training data only  #############################################
 
-ddaa <- data[ grep("/Running/Polar/", file ), ]
+ddaa <-rbind(
+  data[ grep("/TRAIN/", file ), ],
+  data[ grep("/Running/Polar/", file ), ]
+)
+
+
 
 cat(paste( length(unique( ddaa$file )), "files to bin\n" ))
 cat(paste( nrow( ddaa ), "points to bin\n" ))
